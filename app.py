@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 import requests
 
 def local_css(file_name):
@@ -52,7 +53,24 @@ if user_input := st.chat_input("Type your message..."):
     for r in response.json():
         bot_reply = r.get("text", "")
         if bot_reply:
+            # Try to detect if it's a list of movies separated by newline or comma
+            movies = []
+            if "\n" in bot_reply:
+                movies = bot_reply.split("\n")
+            elif "," in bot_reply:
+                movies = [m.strip() for m in bot_reply.split(",")]
+            else:
+                movies = [bot_reply]  # single message
+
+            # Save bot message
             st.session_state["messages"].append({"role": "assistant", "content": bot_reply})
 
+            # Render bot label
             st.markdown("<div class='bot-label'>Bot</div>", unsafe_allow_html=True)
-            st.markdown(f"<div class='bot-message'>{bot_reply}</div>", unsafe_allow_html=True)
+
+            # If more than 1 movie, display as table
+            if len(movies) > 1:
+                df = pd.DataFrame({"Recommended Movies": movies})
+                st.table(df)
+            else:
+                st.markdown(f"<div class='bot-message'>{bot_reply}</div>", unsafe_allow_html=True)

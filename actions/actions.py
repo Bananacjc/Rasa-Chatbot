@@ -6,6 +6,32 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 from rasa_sdk.forms import FormValidationAction
 
+# List of valid movie-search intents
+VALID_MOVIE_INTENTS = [
+    "movie_match_director",
+    "movie_match_actor",
+    "movie_match_year",
+    "movie_match_genre",
+    "movie_match_several_criteria",
+    "movie_match_rating",
+    "get_director_by_movie_title",
+    "get_actor_by_movie_title",
+    "get_year_by_movie_title",
+    "get_genre_by_movie_title",
+    "get_rating_by_movie_title",
+    "get_movie_attributes"
+]
+
+CONFIDENCE_THRESHOLD = 0.6
+
+def should_run_movie_search(tracker: Tracker) -> bool:
+    """Check if the latest message is a movie-search intent with high enough confidence."""
+    intent = tracker.latest_message.get('intent', {}).get('name')
+    confidence = tracker.latest_message.get('intent', {}).get('confidence', 0)
+    return intent in VALID_MOVIE_INTENTS and confidence >= CONFIDENCE_THRESHOLD
+
+
+
 MOVIE_DB_PATH = "./cleaned_movies.csv"
 
 # Load dataset
@@ -179,6 +205,9 @@ class ActionMatchDirectorSearchMovie(Action):
         return "action_match_director_search_movie"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        if not should_run_movie_search(tracker):
+            dispatcher.utter_message(template="utter_default")
+            return []
         call_local_movie_search(tracker, dispatcher)
         return [SlotSet("director", None)]
 
@@ -187,6 +216,9 @@ class ActionMatchActorSearchMovie(Action):
         return "action_match_actor_search_movie"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        if not should_run_movie_search(tracker):
+            dispatcher.utter_message(template="utter_default")
+            return []
         call_local_movie_search(tracker, dispatcher)
         return [SlotSet("actor", None)]
 
@@ -195,6 +227,9 @@ class ActionMatchYearSearchMovie(Action):
         return "action_match_year_search_movie"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        if not should_run_movie_search(tracker):
+            dispatcher.utter_message(template="utter_default")
+            return []
         call_local_movie_search(tracker, dispatcher)
         return [SlotSet("time", None)]
 
@@ -203,6 +238,9 @@ class ActionMatchGenreSearchMovie(Action):
         return "action_match_genre_search_movie"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        if not should_run_movie_search(tracker):
+            dispatcher.utter_message(template="utter_default")
+            return []
         call_local_movie_search(tracker, dispatcher)
         return [SlotSet("genre", None)]
 
@@ -211,6 +249,9 @@ class ActionMatchRatingSearchMovie(Action):
         return "action_match_rating_search_movie"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        if not should_run_movie_search(tracker):
+            dispatcher.utter_message(template="utter_default")
+            return []
         call_local_movie_search(tracker, dispatcher)
         return [SlotSet("rating", None)]
 
@@ -219,41 +260,20 @@ class ActionMatchSeveralCriteriaSearchMovie(Action):
         return "action_match_several_criteria_search_movie"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        df_filtered = netflix_df.copy()
-
-        genre = tracker.get_slot("genre")
-        director = tracker.get_slot("director")
-        actor = tracker.get_slot("actor")
-        time = tracker.get_slot("time")
-
-        if genre:
-            df_filtered = df_filtered[df_filtered["genres"].apply(lambda x: genre.lower() in [g.lower() for g in x] if isinstance(x, list) else False)]
-        if director:
-            df_filtered = df_filtered[df_filtered["director"].apply(lambda x: director.lower() in [d.lower() for d in x] if isinstance(x, list) else False)]
-        if actor:
-            df_filtered = df_filtered[df_filtered["cast"].apply(lambda x: actor.lower() in [a.lower() for a in x] if isinstance(x, list) else False)]
-        if time:
-            try:
-                year = int(str(time)[:4])
-                df_filtered = df_filtered[df_filtered["release_year"] == year]
-            except:
-                pass
-
-        if df_filtered.empty:
-            dispatcher.utter_message("No movies found matching your criteria.")
-        else:
-            dispatcher.utter_message("Recommended movies:")
-            for idx, row in df_filtered.iterrows():
-                dispatcher.utter_message(f"{idx + 1}. {row['title']}")
-
-        # Reset only the slots that were used
-        slots_to_reset = ["genre", "director", "actor", "time"]
-        return [SlotSet(slot, None) for slot in slots_to_reset if tracker.get_slot(slot)]
+        if not should_run_movie_search(tracker):
+            dispatcher.utter_message(template="utter_default")
+            return []
+        call_local_movie_search(tracker, dispatcher)
+        # Reset all slots used
+        return [SlotSet(key, None) for key, value in tracker.slots.items() if value is not None]
 
 class ActionGetMovieBasedAttribute(Action):
     def name(self) -> Text:
         return "action_get_movie_based_attribute"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        get_movies_by_attributes_local(tracker, dispatcher)
+        if not should_run_movie_search(tracker):
+            dispatcher.utter_message(template="utter_default")
+            return []
+        call_local_movie_search(tracker, dispatcher)
         return [SlotSet(key, None) for key, value in tracker.slots.items() if value is not None]

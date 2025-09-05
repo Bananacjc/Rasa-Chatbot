@@ -1,0 +1,101 @@
+:root {
+    --color-white: #F0F0F0;
+    --color-primary: #e30913;
+    --color-secondary: #ae0610;
+    --color-secondary-opposite: #141414;
+    --color-danger: var(--color-secondary);
+    --font-family-text: Arial, Helvetica, sans-serif;
+    --font-family-title: "Lato", sans-serif;
+}   
+
+body, .user-message, .bot-message {
+    font-family: var(--font-family-text);
+}
+
+h1{
+    font-family: var(--font-family-title)!important;
+    font-size: 2.5rem;
+    color: var(--color-primary) !important;
+    font-weight: 700 !important;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.user-label, .bot-label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin: 2px 0;
+    color: var(--color-secondary-opposite);
+    opacity: 0.7;
+}
+
+.user-message {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    padding: 10px;
+    border-radius: 12px 12px 0 12px;
+    margin: 5px 0 5px auto;
+    text-align: right;
+    width: fit-content;
+    max-width: 60%;
+    position: relative;
+}
+
+.user-message::after {
+    content: "";
+    position: absolute;
+    right: -8px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 10px solid var(--color-secondary);
+    border-top: 10px solid transparent;
+    border-bottom: 0 solid transparent;
+}
+
+.user-label {
+    text-align: right;
+    color: var(--color-white);
+}
+
+.bot-message {
+    background-color: var(--color-white);
+    color: var(--color-secondary-opposite);
+    padding: 10px;
+    border-radius: 12px 12px 12px 0;
+    margin: 5px auto 5px 0;
+    text-align: left;
+    width: fit-content;
+    width: 75%;
+    position:relative;
+}
+
+.bot-message::after {
+    content: "";
+    position: absolute;
+    left: -8px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-right: 10px solid var(--color-white);
+    border-top: 10px solid transparent;
+    border-bottom: 0 solid transparent;
+}
+
+.bot-label {
+    text-align: left;
+    color: var(--color-white);
+}
+
+.stChatInput textarea{
+    background-color: var(--color-secondary-opposite);
+    color: var(--color-white);
+    border-radius: 0px !important;
+}
+
+.st-emotion-cache-rd544m {
+  border: 1px solid var(--color-secondary);
+  border-radius: 0px;
+  background-color: var(--color-secondary-opposite);
+
+}
