@@ -1,0 +1,34 @@
+[
+  {
+    "name": "rating",
+    "pattern": "top \\b[0-9]+\\b"
+  },
+  {
+    "name": "time",
+    "pattern": "\\b\\d{4}\\b"
+  },
+  {
+    "name": "actor",
+    "pattern": "(\\b!include\\ data/lookup\\-tables/actor_names\\.txt\\b)"
+  },
+  {
+    "name": "director",
+    "pattern": "(\\b!include\\ data/lookup\\-tables/director_names\\.txt\\b)"
+  },
+  {
+    "name": "genre",
+    "pattern": "(\\b!include\\ data/lookup\\-tables/genres_list\\.txt\\b)"
+  },
+  {
+    "name": "movie_title",
+    "pattern": "(\\b!include\\ data/lookup\\-tables/movie_titles\\.txt\\b)"
+  },
+  {
+    "name": "time",
+    "pattern": "(\\b1990\\b|\\b2010\\b|\\b2018\\b|\\b2005\\b)"
+  },
+  {
+    "name": "movie_attribute",
+    "pattern": "(\\bawesome\\ special\\ effect\\b|\\bno\\ special\\ effect\\b|\\bpeople\\ love\\ for\\ the\\ love\\ story\\b|\\bincredible\\ landscapes\\ and\\ nature\\ scenes\\b|\\bspace\\ travel\\ and\\ aliens\\b|\\bcats\\ and\\ dogs\\b|\\ba\\ lot\\ of\\ blood\\ and\\ war\\b|\\bsuper\\ hero\\b|\\bbased\\ on\\ a\\ true\\ story\\b)"
+  }
+]

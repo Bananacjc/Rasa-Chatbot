@@ -1,0 +1,12 @@
+Run rasa train before anything
+
+Open 3 terminal
+
+1st terminal
+rasa run actions
+
+2nd terminal
+rasa run --enable-api --cors "*"
+
+3rd terminal
+streamlit run app.py
