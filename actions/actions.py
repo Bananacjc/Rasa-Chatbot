@@ -16,42 +16,61 @@ for col in ["director", "cast", "genres"]:
 
 # Helper functions
 def call_local_movie_search(tracker: Tracker, dispatcher: CollectingDispatcher):
-    relevant_slots = ["director", "actor", "genre", "rating", "time", "movie_attribute"]
+    # only slots that can actually FILTER results
+    relevant_slots = ["director", "actor", "genre", "rating", "time"]
+
     if not any(tracker.get_slot(s) for s in relevant_slots):
-        dispatcher.utter_message("I didn't get any movie criteria. Please specify a genre, actor, director, or year.")
+        dispatcher.utter_message("I didn't get any movie criteria. Please specify a genre, actor, director, rating, or year.")
         return
-    
+
     df_filtered = netflix_df.copy()
-    
+    filters_applied = 0
+
     for key, value in tracker.slots.items():
-        if value is not None:
-            if key == "director":
-                df_filtered = df_filtered[df_filtered["director"].apply(lambda x: value.lower() in [d.lower() for d in x] if isinstance(x, list) else False)]
-            elif key == "actor":
-                df_filtered = df_filtered[df_filtered["cast"].apply(lambda x: value.lower() in [a.lower() for a in x] if isinstance(x, list) else False)]
-            elif key == "genre":
-                df_filtered = df_filtered[df_filtered["genres"].apply(lambda x: value.lower() in [g.lower() for g in x] if isinstance(x, list) else False)]
-            elif key == "rating":
-                try:
-                    val = float(value)
-                    df_filtered = df_filtered[df_filtered["rating"] >= val]
-                except ValueError:
-                    pass
-            elif key == "time":
+        if value is None:
+            continue
+        if key == "director":
+            df_filtered = df_filtered[df_filtered["director"].apply(
+                lambda x: isinstance(x, list) and value.lower() in [d.lower() for d in x]
+            )]; filters_applied += 1
+        elif key == "actor":
+            df_filtered = df_filtered[df_filtered["cast"].apply(
+                lambda x: isinstance(x, list) and value.lower() in [a.lower() for a in x]
+            )]; filters_applied += 1
+        elif key == "genre":
+            df_filtered = df_filtered[df_filtered["genres"].apply(
+                lambda x: isinstance(x, list) and value.lower() in [g.lower() for g in x]
+            )]; filters_applied += 1
+        elif key == "rating":
+            try:
+                val = float(value)
+                df_filtered = df_filtered[df_filtered["rating"] >= val]
+                filters_applied += 1
+            except ValueError:
+                pass
+        elif key == "time":
+            try:
                 if isinstance(value, dict):
-                    start = int(value["from"][:4])
-                    end = int(value["to"][:4])
+                    start = int(str(value["from"])[:4]); end = int(str(value["to"])[:4])
                     df_filtered = df_filtered[(df_filtered["release_year"] >= start) & (df_filtered["release_year"] <= end)]
                 else:
                     year = int(str(value)[:4])
                     df_filtered = df_filtered[df_filtered["release_year"] == year]
+                filters_applied += 1
+            except Exception:
+                pass
+
+    # If nothing actually filtered, don't dump all rows
+    if filters_applied == 0:
+        dispatcher.utter_message("I didn't get any usable search criteria. Try a genre/actor/director/rating/year.")
+        return
 
     if df_filtered.empty:
-        dispatcher.utter_message("No movies found")
+        dispatcher.utter_message("No movies found.")
     else:
-        dispatcher.utter_message("Recommended movies are:")
-        for idx, row in df_filtered.iterrows():
-            dispatcher.utter_message(f"{idx + 1}. {row['title']}")
+        dispatcher.utter_message(f"Found {len(df_filtered)} movie(s). Showing up to 10:")
+        for i, (_, row) in enumerate(df_filtered.head(10).iterrows(), start=1):
+            dispatcher.utter_message(f"{i}. {row['title']}")
 
 def get_movie_info_local(tracker: Tracker):
     movie_title = tracker.get_slot("movie_title")
@@ -144,10 +163,12 @@ class ValidateGetMovieAttributeForm(FormValidationAction):
     def name(self) -> Text:
         return "validate_get_movie_based_attribute_form"
 
-    async def extract_movie_attribute(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> Dict[Text, Any]:
+    async def extract_movie_attribute(self, dispatcher, tracker, domain):
         attr_entity = next(tracker.get_latest_entity_values("movie_attribute"), None)
-        if attr_entity:
-            return {"movie_attribute": attr_entity}
+        allowed = {"title","rating","cast","director","genres","release_year"}
+        if attr_entity and attr_entity.lower() in allowed:
+            return {"movie_attribute": attr_entity.lower()}
+        # drop unknown values (like "bot")
         return {}
 
 

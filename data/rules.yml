@@ -5,3 +5,7 @@ rules:
   steps:
   - intent: goodbye
   - action: utter_goodbye
+- rule: Respond to are you a bot
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
