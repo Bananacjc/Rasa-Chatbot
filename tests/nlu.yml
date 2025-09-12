@@ -1,0 +1,98 @@
+version: "3.1"
+
+nlu:
+- intent: get_actor_by_movie_title
+  examples: |
+    - Who acted in Inception?{"movie_title": "Inception"}
+    - Show the cast for The Dark Knight{"movie_title": "The Dark Knight"}
+    - Actors of Parasite{"movie_title": "Parasite"}
+    - Which actors starred in Interstellar?{"movie_title": "Interstellar"}
+    - Tell me the actors in Forrest Gump{"movie_title": "Forrest Gump"}
+
+- intent: get_director_by_movie_title
+  examples: |
+    - Who directed Inception?{"movie_title": "Inception"}
+    - Director of The Social Network{"movie_title": "The Social Network"}
+    - Show the director for Parasite{"movie_title": "Parasite"}
+    - Who is the director of La La Land?{"movie_title": "La La Land"}
+    - Who made The Godfather?{"movie_title": "The Godfather"}
+
+- intent: get_genre_by_movie_title
+  examples: |
+    - What is the genre of Inception?{"movie_title": "Inception"}
+    - Genres for The Dark Knight{"movie_title": "The Dark Knight"}
+    - Tell me the genres of Titanic{"movie_title": "Titanic"}
+    - Which genre is Parasite?{"movie_title": "Parasite"}
+    - Genre of Interstellar{"movie_title": "Interstellar"}
+
+- intent: get_rating_by_movie_title
+  examples: |
+    - What is the rating of Inception?{"movie_title": "Inception"}
+    - Show rating for The Godfather{"movie_title": "The Godfather"}
+    - IMDb score for Parasite{"movie_title": "Parasite"}
+    - How highly rated is Interstellar?{"movie_title": "Interstellar"}
+    - Give me the rating of Joker{"movie_title": "Joker"}
+
+- intent: get_year_by_movie_title
+  examples: |
+    - When was Inception released?{"movie_title": "Inception"}
+    - Release year of The Matrix{"movie_title": "The Matrix"}
+    - What year is Parasite from?{"movie_title": "Parasite"}
+    - Which year did Titanic come out?{"movie_title": "Titanic"}
+    - Year for The Social Network{"movie_title": "The Social Network"}
+
+- intent: get_movie_attributes
+  examples: |
+    - Show movies with runtime info from 2019{"movie_attribute": "runtime", "year": "2019"}
+    - List movies that have language field{"movie_attribute": "language"}
+    - Find horror movies with overview text{"movie_attribute": "overview", "genre": "horror"}
+    - Movies from 2010 that include budget values{"movie_attribute": "budget", "year": "2010"}
+    - Give me action movies where country is available{"movie_attribute": "country", "genre": "action"}
+
+- intent: movie_match_actor
+  examples: |
+    - Movies with Keanu Reeves{"actor": "Keanu Reeves"}
+    - Find films starring Scarlett Johansson{"actor": "Scarlett Johansson"}
+    - Show movies featuring Tom Hanks{"actor": "Tom Hanks"}
+    - List Leonardo DiCaprio movies{"actor": "Leonardo DiCaprio"}
+    - Give me Tika Sumpter films{"actor": "Tika Sumpter"}
+
+- intent: movie_match_director
+  examples: |
+    - Movies directed by Christopher Nolan{"director": "Christopher Nolan"}
+    - Show Steven Spielberg films{"director": "Steven Spielberg"}
+    - List Quentin Tarantino movies{"director": "Quentin Tarantino"}
+    - Give me Greta Gerwig movies{"director": "Greta Gerwig"}
+    - Bong Joon-ho directed movies{"director": "Bong Joon-ho"}
+
+- intent: movie_match_genre
+  examples: |
+    - Show me action movies{"genre": "action"}
+    - List comedy films{"genre": "comedy"}
+    - Find horror movies{"genre": "horror"}
+    - Recommend romance movies{"genre": "romance"}
+    - Any science fiction films{"genre": "science fiction"}
+
+- intent: movie_match_year
+  examples: |
+    - Movies from 1994{"year": "1994"}
+    - Show films from 2010{"year": "2010"}
+    - List 2019 movies{"year": "2019"}
+    - Any 2020 releases{"year": "2020"}
+    - Films from 2001{"year": "2001"}
+
+- intent: movie_match_rating
+  examples: |
+    - Top 5 movies{"rating": "5"}
+    - Top 10 action movies{"rating": "10", "genre": "action"}
+    - Top 3 movies from 2019{"rating": "3", "year": "2019"}
+    - Top 8 films directed by Christopher Nolan{"rating": "8", "director": "Christopher Nolan"}
+    - Top 7 comedy films from 2010{"rating": "7", "genre": "comedy", "year": "2010"}
+
+# - intent: movie_match_several_criteria
+#   examples: |
+#     - Action movies from 2019 with Tom Hanks{"genre": "action", "year": "2019", "actor": "Tom Hanks"}
+#     - Christopher Nolan sci-fi films from 2010{"director": "Christopher Nolan", "genre": "science fiction", "year": "2010"}
+#     - Comedy movies with Scarlett Johansson from 2008{"genre": "comedy", "actor": "Scarlett Johansson", "year": "2008"}
+#     - Horror films directed by Bong Joon-ho from 2003{"genre": "horror", "director": "Bong Joon-ho", "year": "2003"}
+#     - Keanu Reeves action films from 1999{"actor": "Keanu Reeves", "genre": "action", "year": "1999"}

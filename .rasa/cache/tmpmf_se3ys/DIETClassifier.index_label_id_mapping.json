@@ -1,0 +1,21 @@
+{
+  "0": "affirm",
+  "1": "bot_challenge",
+  "2": "deny",
+  "3": "get_actor_by_movie_title",
+  "4": "get_director_by_movie_title",
+  "5": "get_genre_by_movie_title",
+  "6": "get_movie_attributes",
+  "7": "get_rating_by_movie_title",
+  "8": "get_year_by_movie_title",
+  "9": "goodbye",
+  "10": "greet",
+  "11": "mood_great",
+  "12": "mood_unhappy",
+  "13": "movie_match_actor",
+  "14": "movie_match_director",
+  "15": "movie_match_genre",
+  "16": "movie_match_rating",
+  "17": "movie_match_several_criteria",
+  "18": "movie_match_year"
+}

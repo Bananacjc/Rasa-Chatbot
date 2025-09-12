@@ -1,0 +1,17 @@
+recipe: default.v1
+assistant_id: 20250906-232834-merry-precision
+language: en
+pipeline:
+- name: WhitespaceTokenizer
+- name: RegexFeaturizer
+- name: RegexEntityExtractor
+  use_lookup_tables: True
+- name: DIETClassifier
+  epochs: 300
+- name: FallbackClassifier
+  threshold: 0.2
+  ambiguity_threshold: 0.1
+
+policies:
+- name: RulePolicy
+- name: MemoizationPolicy

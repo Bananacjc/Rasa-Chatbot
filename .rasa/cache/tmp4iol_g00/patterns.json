@@ -1,0 +1,6 @@
+[
+  {
+    "name": "movie_attribute",
+    "pattern": "(\\bawesome\\ special\\ effect\\b|\\bno\\ special\\ effect\\b|\\bpeople\\ love\\ for\\ the\\ love\\ story\\b|\\bincredible\\ landscapes\\ and\\ nature\\ scenes\\b|\\bspace\\ travel\\ and\\ aliens\\b|\\bcats\\ and\\ dogs\\b|\\ba\\ lot\\ of\\ blood\\ and\\ war\\b|\\bsuper\\ hero\\b|\\bbased\\ on\\ a\\ true\\ story\\b)"
+  }
+]

@@ -1,0 +1,174 @@
+version: "3.1"
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - movie_match_director
+  - movie_match_actor
+  - movie_match_year
+  - movie_match_genre
+  - movie_match_several_criteria
+  - movie_match_rating
+  - get_director_by_movie_title
+  - get_actor_by_movie_title
+  - get_year_by_movie_title
+  - get_genre_by_movie_title
+  - get_rating_by_movie_title
+  - get_movie_attributes
+entities:
+  - director
+  - actor
+  - genre
+  - rating
+  - movie_title
+  - year
+  - movie_attribute
+slots:
+  director:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: director
+  actor:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: actor
+  genre:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: genre
+  rating:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: rating
+  movie_title:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: movie_title
+  year:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: year
+  movie_attribute:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: movie_attribute
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+  utter_did_that_help:
+  - text: "Did that help you?"
+  utter_happy:
+  - text: "Great, carry on!"
+  utter_goodbye:
+  - text: "Bye"
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+  utter_default:
+  - text: "Sorry, I didn't get that, can you rephrase it?"
+  utter_ask_director:
+  - text: "What is the director name?"
+  utter_ask_actor:
+  - text: "What is the actor name?"
+  utter_ask_time:
+  - text: "What is the year?"
+  utter_ask_genre:
+  - text: "What is the genre?"
+  utter_ask_rating:
+  - text: "What is the rating?"
+  utter_ask_movie_title:
+  - text: "What is the title of the movie?"
+  utter_ask_movie_attribute:
+  - text: "What is the attribute of the movie?"
+  utter_movie_match_director_result:
+  - text: "Finding movies with Director name: {director}"
+  utter_movie_match_actor_result:
+  - text: "Finding movies with Actor name: {actor}"
+  utter_movie_match_year_result:
+  - text: "Finding movies of this Year: {year}"
+  utter_movie_match_genre_result:
+  - text: "Finding movies of this Genre: {genre}"
+  utter_movie_match_rating_result:
+  - text: "Finding movues with the Rating: {rating}"
+actions:
+  - utter_greet
+  - utter_cheer_up
+  - utter_did_that_help
+  - utter_happy
+  - utter_goodbye
+  - utter_iamabot
+  - utter_default
+  - utter_ask_director
+  - utter_ask_actor
+  - utter_ask_time
+  - utter_ask_genre
+  - utter_ask_rating
+  - utter_ask_movie_title
+  - utter_ask_movie_attribute
+  - utter_movie_match_director_result
+  - utter_movie_match_actor_result
+  - utter_movie_match_year_result
+  - utter_movie_match_genre_result
+  - utter_movie_match_rating_result
+  - action_match_director_search_movie
+  - action_match_actor_search_movie
+  - action_match_year_search_movie
+  - action_match_genre_search_movie
+  - action_match_several_criteria_search_movie
+  - action_match_rating_search_movie
+  - action_get_director_by_movie_title
+  - action_get_actor_by_movie_title
+  - action_get_year_by_movie_title
+  - action_get_genre_by_movie_title
+  - action_get_rating_by_movie_title
+  - action_get_movie_based_attribute
+forms:
+  movie_match_director_form:
+    required_slots:
+      - director
+  movie_match_actor_form:
+    required_slots:
+      - actor
+  movie_match_year_form:
+    required_slots:
+      - year
+  movie_match_genre_form:
+    required_slots:
+      - genre
+  movie_match_rating_form:
+    required_slots:
+      - rating
+  get_director_by_movie_title_form:
+    required_slots:
+      - movie_title
+  get_actor_by_movie_title_form:
+    required_slots:
+      - movie_title
+  get_year_by_movie_title_form:
+    required_slots:
+      - movie_title
+  get_genre_by_movie_title_form:
+    required_slots:
+      - movie_title
+  get_rating_by_movie_title_form:
+    required_slots:
+      - movie_title
+  get_movie_based_attribute_form:
+    required_slots:
+      - movie_attribute
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: false

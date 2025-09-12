@@ -1,0 +1,156 @@
+version: "3.1"
+
+rules:
+
+- rule: Respond to greetings
+  steps:
+    - intent: greet
+    - action: utter_greet
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: search movie by director
+  steps:
+    - intent: movie_match_director
+    - action: movie_match_director_form
+    - active_loop: movie_match_director_form
+- rule: submit director form
+  condition:
+    - active_loop: movie_match_director_form
+  steps:
+    - action: movie_match_director_form
+    - active_loop: null
+    - action: action_match_director_search_movie
+
+- rule: search movie by actor
+  steps:
+    - intent: movie_match_actor
+    - action: movie_match_actor_form
+    - active_loop: movie_match_actor_form
+- rule: submit actor form
+  steps:
+    - active_loop: movie_match_actor_form
+    - action: movie_match_actor_form
+    - active_loop: null
+    - action: action_match_actor_search_movie
+
+- rule: search movie by year
+  steps:
+    - intent: movie_match_year
+    - action: movie_match_year_form
+    - active_loop: movie_match_year_form
+- rule: submit year form
+  steps:
+    - active_loop: movie_match_year_form
+    - action: movie_match_year_form
+    - active_loop: null
+    - action: action_match_year_search_movie
+
+- rule: search movie by genre
+  steps:
+    - intent: movie_match_genre
+    - action: movie_match_genre_form
+    - active_loop: movie_match_genre_form
+- rule: submit genre form
+  steps:
+    - active_loop: movie_match_genre_form
+    - action: movie_match_genre_form
+    - active_loop: null
+    - action: action_match_genre_search_movie
+
+- rule: search movie by several criteria
+  steps:
+    - intent: movie_match_several_criteria
+    - action: action_match_several_criteria_search_movie
+
+- rule: search movie by rating
+  steps:
+    - intent: movie_match_rating
+    - action: movie_match_rating_form
+    - active_loop: movie_match_rating_form
+- rule: submit rating form
+  steps:
+    - active_loop: movie_match_rating_form
+    - action: movie_match_rating_form
+    - active_loop: null
+    - action: action_match_rating_search_movie
+
+- rule: search director with movie title
+  steps:
+    - intent: get_director_by_movie_title
+    - action: get_director_by_movie_title_form
+    - active_loop: get_director_by_movie_title_form
+- rule: submit director by movie title form
+  steps:
+    - active_loop: get_director_by_movie_title_form
+    - action: get_director_by_movie_title_form
+    - active_loop: null
+    - action: action_get_director_by_movie_title
+
+- rule: search actor with movie title
+  steps:
+    - intent: get_actor_by_movie_title
+    - action: get_actor_by_movie_title_form
+    - active_loop: get_actor_by_movie_title_form
+- rule: submit actor by movie title form
+  steps:
+    - active_loop: get_actor_by_movie_title_form
+    - action: get_actor_by_movie_title_form
+    - active_loop: null
+    - action: action_get_actor_by_movie_title
+
+- rule: search year with movie title
+  steps:
+    - intent: get_year_by_movie_title
+    - action: get_year_by_movie_title_form
+    - active_loop: get_year_by_movie_title_form
+- rule: submit year by movie title form
+  steps:
+    - active_loop: get_year_by_movie_title_form
+    - action: get_year_by_movie_title_form
+    - active_loop: null
+    - action: action_get_year_by_movie_title
+
+- rule: search genre with movie title
+  steps:
+    - intent: get_genre_by_movie_title
+    - action: get_genre_by_movie_title_form
+    - active_loop: get_genre_by_movie_title_form
+- rule: submit genre by movie title form
+  steps:
+    - active_loop: get_genre_by_movie_title_form
+    - action: get_genre_by_movie_title_form
+    - active_loop: null
+    - action: action_get_genre_by_movie_title
+
+- rule: search rating with movie title
+  steps:
+    - intent: get_rating_by_movie_title
+    - action: get_rating_by_movie_title_form
+    - active_loop: get_rating_by_movie_title_form
+- rule: submit rating by movie title form
+  steps:
+    - active_loop: get_rating_by_movie_title_form
+    - action: get_rating_by_movie_title_form
+    - active_loop: null
+    - action: action_get_rating_by_movie_title
+
+- rule: search for movies based on its attributes
+  steps:
+    - intent: get_movie_attributes
+    - action: get_movie_based_attribute_form
+    - active_loop: get_movie_based_attribute_form
+- rule: submit movie based on its attributes form
+  steps:
+    - active_loop: get_movie_based_attribute_form
+    - action: get_movie_based_attribute_form
+    - active_loop: null
+    - action: action_get_movie_based_attribute
